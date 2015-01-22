@@ -15,6 +15,7 @@ namespace WebApp.Models
         public List<CommentModel> commentListObject { get; set; }
         public CommentModel commentObject { get; set; }
         public ProductModel productObject { get; set; }
+        public bool saveCommentToSession { get; set; }
     }
 
     public class ManageUserViewModel

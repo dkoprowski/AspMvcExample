@@ -58,12 +58,23 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         public void Details(CommentProductViewModel cpviewmodel)
         {
-            //cpviewmodel.commentObject.ApplicationUserId = User.Identity.GetUserId();
+
             cpviewmodel.commentObject.DateOfPublication = DateTime.Now;
             cpviewmodel.commentObject.ProductId = cpviewmodel.productObject.Id;
 
-            db.CommentModels.Add(cpviewmodel.commentObject);
-            db.SaveChanges();
+            if (cpviewmodel.saveCommentToSession)
+            {
+                Session["savedComment" + cpviewmodel.productObject.Id.ToString()] = cpviewmodel.commentObject.Content;
+                
+            }
+            else
+            {
+                Session["savedComment" + cpviewmodel.productObject.Id.ToString()] = "";
+
+                db.CommentModels.Add(cpviewmodel.commentObject);
+                db.SaveChanges();              
+            }
+
 
             Response.Redirect(cpviewmodel.productObject.Id.ToString());
            // Details(cpviewmodel.productObject.Id);

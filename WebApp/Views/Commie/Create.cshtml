@@ -14,9 +14,15 @@
         @Html.ValidationSummary(true)
 
             <div>
-                @Html.TextAreaFor(model => model.commentObject.Content)
+
+                <textarea id="commentObject_Content" rows="2" name="commentObject.Content" cols="20" value="some blabla contexdt">@if ((Session["savedComment" + Model.productObject.Id.ToString()])!=null)
+                                                                                                                                  {
+                                                                                                                                      @Session["savedComment" + Model.productObject.Id.ToString()].ToString();
+                                                                                                                                  }</textarea>
                 @Html.ValidationMessageFor(model => model.commentObject.Content)
-                <input type="submit" value="Comment!" class="btn btn-success" />
+                Save your comment without publication? @Html.CheckBoxFor(model => model.saveCommentToSession)
+                <br/>
+                <input type="submit" value="Comment!" class="btn btn-success"/>
 
             </div>
 
