@@ -10,6 +10,7 @@ using WebApp.Models;
 
 namespace WebApp.Controllers
 {
+    [Authorize]
     public class CommieController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -19,6 +20,21 @@ namespace WebApp.Controllers
         {
             var commentmodels = db.CommentModels.Include(c => c.User).Include(c => c.Product);
             return View(commentmodels.ToList());
+        }
+
+        // GET: /Commie/Details/5
+        public ActionResult List(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            List<CommentModel> commentmodels = db.CommentModels.Where(m => m.ProductId == id).ToList();
+            if (commentmodels == null)
+            {
+                return HttpNotFound();
+            }
+            return View(commentmodels);
         }
 
         // GET: /Commie/Details/5
@@ -49,18 +65,15 @@ namespace WebApp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include="Id,Content,DateOfPublication,ProductId,ApplicationUserId")] CommentModel commentmodel)
+        public void Create([Bind(Include="Id,Content,DateOfPublication,ProductId,ApplicationUserId")] CommentModel commentmodel)
         {
             if (ModelState.IsValid)
             {
                 db.CommentModels.Add(commentmodel);
                 db.SaveChanges();
-                return RedirectToAction("Index");
             }
 
-            ViewBag.ApplicationUserId = new SelectList(db.Users, "Id", "UserName", commentmodel.ApplicationUserId);
-            ViewBag.ProductId = new SelectList(db.ProductModels, "Id", "Path", commentmodel.ProductId);
-            return View(commentmodel);
+
         }
 
         // GET: /Commie/Edit/5

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
@@ -11,17 +12,21 @@ using WebApp.Models;
 
 namespace WebApp.Controllers
 {
+    [Authorize]
     public class ProductController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: /Product/
+        [AllowAnonymous]
         public ActionResult Index()
         {
             return View(db.ProductModels.ToList());
         }
 
+
         // GET: /Product/Details/5
+        [AllowAnonymous]
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -29,7 +34,7 @@ namespace WebApp.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             ProductModel productmodel = db.ProductModels.Find(id);
-            List<CommentModel> commentlistmodel = db.CommentModels.ToList();
+            List<CommentModel> commentlistmodel = db.CommentModels.Where(m => m.ProductId == id).ToList();
             CommentModel commentmodel = new CommentModel();
             if (productmodel == null)
             {
@@ -44,21 +49,6 @@ namespace WebApp.Controllers
             };
 
             return View(cpViewModel);
-
-
-
-            /*
-                var profileModel = db.Users.First(e => e.UserName == WebSecurity.CurrentUserName);
-                 var userModel = //fetch from db.
-
-            var pmViewModel = new ProfileUserViewModel  
-                          {
-                              ProfileModelObject = profileModel,
-                              UserModelObject = userModel
-                          };
-
-   r                eturn View(pmViewModel);
-             * */
         }
 
         // POST: /Product/Create
@@ -66,15 +56,18 @@ namespace WebApp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Details(CommentProductViewModel cpviewmodel)
+        public void Details(CommentProductViewModel cpviewmodel)
         {
-            cpviewmodel.commentObject.ApplicationUserId = User.Identity.GetUserId();
+            //cpviewmodel.commentObject.ApplicationUserId = User.Identity.GetUserId();
             cpviewmodel.commentObject.DateOfPublication = DateTime.Now;
             cpviewmodel.commentObject.ProductId = cpviewmodel.productObject.Id;
 
             db.CommentModels.Add(cpviewmodel.commentObject);
+            db.SaveChanges();
 
-            return View(cpviewmodel);
+            Response.Redirect(cpviewmodel.productObject.Id.ToString());
+           // Details(cpviewmodel.productObject.Id);
+
         }
 
         // GET: /Product/Create

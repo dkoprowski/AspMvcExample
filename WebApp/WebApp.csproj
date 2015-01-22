@@ -239,6 +239,7 @@
     <Content Include="Views\Commie\Details.cshtml" />
     <Content Include="Views\Commie\Edit.cshtml" />
     <Content Include="Views\Commie\Index.cshtml" />
+    <Content Include="Views\Commie\List.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

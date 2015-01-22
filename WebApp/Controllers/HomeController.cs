@@ -8,9 +8,10 @@ namespace WebApp.Controllers
 {
     public class HomeController : Controller
     {
-        public ActionResult Index()
+        public void Index()
         {
-            return View();
+            Response.Redirect("Product");
+
         }
 
     }
