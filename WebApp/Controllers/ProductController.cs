@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Data;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using Antlr.Runtime.Misc;
 using Microsoft.AspNet.Identity;
 using WebApp.Models;
 
@@ -71,7 +73,7 @@ namespace WebApp.Controllers
             {
                 Session["savedComment" + cpviewmodel.productObject.Id.ToString()] = "";
 
-                db.CommentModels.Add(cpviewmodel.commentObject);
+               db.CommentModels.Add(cpviewmodel.commentObject);
                 db.SaveChanges();              
             }
 
@@ -82,6 +84,7 @@ namespace WebApp.Controllers
         }
 
         // GET: /Product/Create
+        [Authorize(Roles = "Moderator")]
         public ActionResult Create()
         {
             return View();
@@ -92,16 +95,31 @@ namespace WebApp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include="Id,Path,ReleaseDate,Title,Description")] ProductModel productmodel)
+        [Authorize(Roles = "Moderator")]
+        public ActionResult Create(ProductModel productmodel)
         {
-            if (ModelState.IsValid)
+
+            
+            if (Request.Files.Count > 0)
             {
+                var file = Request.Files[0];
+
+                if (file != null && file.ContentLength > 0)
+                {
+                    var fileName = Path.GetFileName(file.FileName);
+                    var path = Path.Combine(Server.MapPath("../Images/"), fileName);
+                    file.SaveAs(path);
+                    productmodel.Path = "/Images/" + fileName;
+
+                }
+            }
+            
+
+
                 db.ProductModels.Add(productmodel);
                 db.SaveChanges();
                 return RedirectToAction("Index");
-            }
 
-            return View(productmodel);
         }
 
         // GET: /Product/Edit/5

@@ -1,3 +1,7 @@
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+using WebApp.Models;
+
 namespace WebApp.Migrations
 {
     using System;
@@ -26,6 +30,25 @@ namespace WebApp.Migrations
             //      new Person { FullName = "Rowan Miller" }
             //    );
             //
+            UserManager<User> um = new UserManager<User>(new UserStore<User>(context));
+            RoleManager<IdentityRole> rm = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(context));
+
+
+            if (!rm.RoleExists("Moderator"))
+            {
+                rm.Create(new IdentityRole("Moderator"));
+            }
+
+            
+            User userModerator = new User
+            {
+                UserName = "moderator",
+                PasswordHash = new PasswordHasher().HashPassword("blabla"),
+                
+            };
+
+            context.Users.AddOrUpdate(u => u.UserName, userModerator);
+            um.AddToRole(userModerator.Id, "Moderator");
         }
     }
 }

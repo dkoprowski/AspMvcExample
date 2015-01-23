@@ -177,6 +177,15 @@
     <Compile Include="Migrations\201501211854420_firstBaseModels1.Designer.cs">
       <DependentUpon>201501211854420_firstBaseModels1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201501222208121_roles.cs" />
+    <Compile Include="Migrations\201501222208121_roles.Designer.cs">
+      <DependentUpon>201501222208121_roles.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201501222321552_filezz.cs" />
+    <Compile Include="Migrations\201501222321552_filezz.Designer.cs">
+      <DependentUpon>201501222321552_filezz.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\ApplicationUser.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\CommentModel.cs" />
@@ -261,6 +270,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201501211854420_firstBaseModels1.resx">
       <DependentUpon>201501211854420_firstBaseModels1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201501222208121_roles.resx">
+      <DependentUpon>201501222208121_roles.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201501222321552_filezz.resx">
+      <DependentUpon>201501222321552_filezz.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

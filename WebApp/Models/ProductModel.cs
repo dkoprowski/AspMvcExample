@@ -10,7 +10,7 @@ namespace WebApp.Models
     public class ProductModel
     {
         public int Id { get; set; }
-        [Required]
+        
         public string Path { get; set; }    //path to the location on server where a game is stored
 
         [DataType(DataType.DateTime)]

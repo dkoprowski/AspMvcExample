@@ -20,7 +20,7 @@
                                                                                                                                       @Session["savedComment" + Model.productObject.Id.ToString()].ToString();
                                                                                                                                   }</textarea>
                 @Html.ValidationMessageFor(model => model.commentObject.Content)
-                Save your comment without publication? @Html.CheckBoxFor(model => model.saveCommentToSession)
+                <br/>Save your comment without publication? @Html.CheckBoxFor(model => model.saveCommentToSession)
                 <br/>
                 <input type="submit" value="Comment!" class="btn btn-success"/>
 
